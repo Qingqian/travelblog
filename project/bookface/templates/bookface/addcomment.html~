@@ -1,0 +1,34 @@
+{% extends "bookface/base.html" %}
+
+{% block fullname %}
+{{cur_user.first_name}} {{cur_user.last_name}}
+{% endblock %}
+
+{% block recommend %}
+{% for bf_user in recommend_list %}
+	<li><a href="/bookface/visituser?username={{bf_user.username}}">{{bf_user.first_name}} {{bf_user.last_name}}</a> <small><a href="/bookface/home?addfriend={{bf_user.username}}">Add Friend</a></small></li>
+{% endfor %}
+{% endblock %}
+
+{% block posts %}
+		<div class="blog-post">
+			<p class="blog-post-meta">{{post.time}} by <a href="/bookface/visituser?username={{post.user.username}}">{{post.user.first_name}} {{post.user.last_name}}</a></p>
+			<p>{{post.text}}</p>
+			{% for comment in comment_list %}
+				<p><small><a href="/bookface/visituser?username={{comment.src_user.username}}">{{comment.src_user.first_name}} {{comment.src_user.last_name}}</a> ({{comment.time}})    {{comment.text}}</small></p>
+			{% endfor %}
+		<form class="form-signin" role="form" method="post" action="/bookface/addcomment">
+		<input type="hidden" name="postid" value="{{post.id}}">
+		<input type="text" class="form-control" name="comment" placeholder="What's your comment?" required autofocus>
+		<button class="btn btn-primary" type="submit">Comment</button>
+		{% csrf_token %}
+		</form>
+        </div>
+		<hr/>
+{% endblock %}
+
+{% block recentvisits %}
+{% for recent_user in recent_list %}
+	<li> <a href="/bookface/visituser?username={{recent_user.username}}">{{recent_user.first_name}} {{recent_user.last_name}}</a>
+{% endfor %}
+{% endblock %}

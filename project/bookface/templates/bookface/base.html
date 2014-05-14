@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<link rel="stylesheet" href="/static/bootstrap-3.1.1-dist/css/bootstrap.min.css">
+<link href="/static/bootstrap-3.1.1-dist/css/mytemplate.css" rel="stylesheet">
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/bookface/home">BookFace</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/bookface/home">Home</a></li>
+	<li><a href="/bookface/mypage">My Page</a></li>
+	<li><a href="/bookface/listfriends">Friends</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+	<li><a href="/bookface/logout">Sign Out</a></li>
+	<li class="active"><a href="/bookface/home">{% block fullname %}{% endblock %}</a></li>
+      </ul>
+      <form class="navbar-form navbar-right" method="post" action="/bookface/searchuser">
+	<input type="text" name="keyword" class="form-control" placeholder="Search...">
+	{% csrf_token %}
+      </form>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="sidebar-nav-fixed affix">
+                <div class="well">
+                    <ul class="nav ">
+                        <li><a href="/bookface/home">News Feed</a>
+                        </li>
+                        <li><a href="/bookface/messagecenter">Message Center</a>
+                        </li>
+                        <li><a href="/bookface/gallery">Gallery</a>
+                        </li>
+                        <li><a href="/bookface/hottopic">Hot Topics</a>
+                        </li>
+                        <li><a href="/bookface/search">Search</a>
+                        </li>
+                        <!--<li class="nav-header">Friend Categories</li>
+                        <li><a href="#">Family</a>
+                        </li>
+                        <li><a href="#">Classmates</a>
+                        </li>
+                        <li><a href="#">Colleagues</a>
+                        </li>
+                        <li><a href="#">Co-cyclers</a>
+                        </li>
+						<li><a href="#">Others</a>
+                        </li> -->
+                    </ul>
+                </div>
+                <!--/.well -->
+            </div>
+            <!--/sidebar-nav-fixed -->
+        </div>
+
+        <div class="col-md-6 blog-main">
+			{% block notice %}{% endblock %}
+			{% block addpost %}{% endblock %}
+			{% block posts %}{% endblock %}
+        </div>
+
+        <div class="col-md-3">
+            <div class="sidebar-nav-fixed pull-right affix">
+                <div class="well">
+                    <ul class="nav ">
+                        <li class="nav-header">Recent Visits</li>
+						{% block recentvisits %}{% endblock %}
+						<hr/>
+                        <li class="nav-header">Recommended Friends</li>
+						{% block recommend %}{% endblock %}
+                    </ul>
+                </div>
+                <!--/.well -->
+            </div>
+            <!--/sidebar-nav-fixed -->
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+</div>
+
+</body>
+</html>

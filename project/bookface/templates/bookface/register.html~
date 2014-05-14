@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/bootstrap-3.1.1-dist/css/signin.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">BookFace</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+	<li><a href="/bookface/home">Home</a></li>
+	<li><a href="/bookface/mypage">My Page</a></li>
+	<li><a href="/bookface/listfriends">Friends</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
+
+    <div class="jumbotron">
+
+      <form class="form-signin" role="form" method="post" action="/bookface/register">
+        <h2 class="form-signin-heading">Please Register</h2>
+<label>Email: </label>
+<input type="text" name="username" value="{{username}}"> <br/>
+<label>First Name: 
+</label><input type="text" name="firstname" value="{{firstname}}"> <br/>
+<label>Last Name: 
+</label><input type="text" name="lastname" value="{{lastname}}"> <br/>
+<label>Password: 
+</label><input type="password" name="password"> <br/>
+<button class="btn btn-primary" type="submit">Register</button>
+		{% csrf_token %}
+      </form>
+
+    </div> <!-- /container -->
+
+  </body>
+</html>

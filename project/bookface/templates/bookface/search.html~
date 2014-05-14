@@ -1,0 +1,33 @@
+{% extends "bookface/base.html" %}
+
+{% block fullname %}
+{{cur_user.first_name}} {{cur_user.last_name}}
+{% endblock %}
+
+{% block recommend %}
+{% for bf_user in recommend_list %}
+	<li><a href="/bookface/visituser?username={{bf_user.username}}">{{bf_user.first_name}} {{bf_user.last_name}}</a> <small><a href="/bookface/home?addfriend={{bf_user.username}}">Add Friend</a></small></li>
+{% endfor %}
+{% endblock %}
+
+{% block recentvisits %}
+{% for recent_user in recent_list %}
+	<li> <a href="/bookface/visituser?username={{recent_user.username}}">{{recent_user.first_name}} {{recent_user.last_name}}</a>
+{% endfor %}
+{% endblock %}
+
+{% block posts %}
+<h4>Search for users: </h4>
+<form class="form-signin" role="form" method="post" action="/bookface/searchuser">
+<input type="text" class="form-control" name="keyword" required autofocus>
+<button class="btn btn-primary" type="submit">Search</button>
+{% csrf_token %}
+</form>
+<hr/>
+<h4>Search for posts: </h4>
+<form class="form-signin" role="form" method="post" action="/bookface/searchpost">
+<input type="text" class="form-control" name="keyword" required autofocus>
+<button class="btn btn-primary" type="submit">Search</button>
+{% csrf_token %}
+</form>
+{% endblock %}

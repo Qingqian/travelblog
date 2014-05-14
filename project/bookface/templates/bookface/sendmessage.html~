@@ -1,0 +1,39 @@
+{% extends "bookface/base.html" %}
+
+{% block fullname %}
+{{cur_user.first_name}} {{cur_user.last_name}}
+{% endblock %}
+
+{% block recommend %}
+{% for bf_user in recommend_list %}
+	<li><a href="/bookface/visituser?username={{bf_user.username}}">{{bf_user.first_name}} {{bf_user.last_name}}</a> <a href="/bookface/home?addfriend={{bf_user.username}}">Add</a>
+{% endfor %}
+{% endblock %}
+
+{% block recentvisits %}
+{% for recent_user in recent_list %}
+	<li> <a href="/bookface/visituser?username={{recent_user.username}}">{{recent_user.first_name}} {{recent_user.last_name}}</a>
+{% endfor %}
+{% endblock %}
+
+{% block addpost %}
+<h2> Personal Message with <a href="/bookface/visituser?username={{dst_user.username}}">{{dst_user.first_name}} {{dst_user.last_name}}</a></h2>
+<hr/>
+{% endblock %}
+
+{% block posts %}
+{% for message in message_list %}
+	{% if message.src == dst_user %}
+		<p align="left"> {{message.text}} </p>
+	{% else %}
+		<p align="right"> {{message.text}} </p>
+	{% endif %}
+	<hr/>
+{% endfor %}
+<form class="form-signin" role="form" method="post" action="/bookface/dosend">
+<input type="hidden" name="username" value="{{dst_user.username}}">
+<input type="text" class="form-control" name="msg" required autofocus>
+<button class="btn btn-primary" type="submit">Send</button>
+{% csrf_token %}
+</form>
+{% endblock %}

@@ -1,0 +1,19 @@
+body {
+    padding-bottom: 40px;
+    padding-top: 60px;
+}
+
+.sidebar-nav-fixed {
+	width:20%;
+}
+
+.blog-main {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.blog-post-meta {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #999;
+}

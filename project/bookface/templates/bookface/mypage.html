@@ -1,0 +1,102 @@
+{% extends "bookface/base.html" %}
+
+{% block fullname %}
+{{cur_user.first_name}} {{cur_user.last_name}}
+{% endblock %}
+
+{% block recommend %}
+{% for bf_user in recommend_list %}
+	<li><a href="/bookface/visituser?username={{bf_user.username}}">{{bf_user.first_name}} {{bf_user.last_name}}</a> <small><a href="/bookface/home?addfriend={{bf_user.username}}">Add Friend</a></small></li>
+{% endfor %}
+{% endblock %}
+
+{% block addpost %}
+<form class="form-signin" role="form" method="post" enctype="multipart/form-data" action="/bookface/addpost">
+<input type="text" class="form-control" name="post" placeholder="What's on your mind?" required autofocus>
+<input type="file" name="picture">
+
+<p id="errormessage"></p>
+	<div id="mapholder"></div>
+	<div id="locname" style="display: none;">custom location name:<input type="text" name="location_name"></div>
+	<input type="hidden" name="latitude" id="latinput">
+	<input type="hidden" name="longitude" id="longinput">
+	<button onclick="getLocation()" type="button" id="locbutton">add your location?</button>
+<script>
+var x=document.getElementById("errormessage");
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";}
+  }
+
+function showPosition(position)
+  {
+  var latlon=position.coords.latitude+","+position.coords.longitude;
+
+  var img_url="http://maps.googleapis.com/maps/api/staticmap?center="
+  +latlon+"&zoom=14&size=400x300&sensor=false&markers="+latlon;
+  document.getElementById("mapholder").innerHTML="<img src='"+img_url+"'>";
+
+  document.getElementById("locname").style.display='inline-block';
+  document.getElementById("latinput").value=position.coords.latitude;
+  document.getElementById("longinput").value=position.coords.longitude;
+  document.getElementById("locbutton").style.display='none';
+  }
+
+function showError(error)
+  {
+  switch(error.code) 
+    {
+    case error.PERMISSION_DENIED:
+      x.innerHTML="User denied the request for Geolocation."
+      break;
+    case error.POSITION_UNAVAILABLE:
+      x.innerHTML="Location information is unavailable."
+      break;
+    case error.TIMEOUT:
+      x.innerHTML="The request to get user location timed out."
+      break;
+    case error.UNKNOWN_ERROR:
+      x.innerHTML="An unknown error occurred."
+      break;
+    }
+  }
+</script>
+<button class="btn btn-primary" type="submit">Post</button>
+{% csrf_token %}
+</form>
+<hr/>
+{% endblock %}
+
+{% block posts %}
+	{% for post in post_list %}
+		<div class="blog-post">
+			<p class="blog-post-meta">{{post.time}} by <a href="/bookface/visituser?username={{post.user.username}}">{{post.user.first_name}} {{post.user.last_name}}</a></p>
+			{% if post.text %}
+				<p>{{post.text}}</p>
+			{% endif %}
+			{% if post.pic %}
+				<p><img src="/bookface/photo/{{ post.id }}" width="250px"></p>
+			{% endif %}
+			{% if post.location %}
+				<p class="blog-post-meta">@{{post.location}} <a id="map" href="/bookface/map/{{post.latitude}}a{{post.longitude}}">view map</a></p>
+			{% endif %}
+			<p align="right"><small><a href="/bookface/deletepost?id={{post.id}}">Delete</a> <a href="/bookface/comment?id={{post.id}}">Comment</a></small></p>
+			{% for comment in comment_list %}
+				{% if comment.post.id == post.id %}
+					<p><small><a href="/bookface/visituser?username={{comment.src_user.username}}">{{comment.src_user.first_name}} {{comment.src_user.last_name}}</a> ({{comment.time}})    {{comment.text}}</small></p>
+				{% endif %}
+			{% endfor %}
+        </div>
+	<hr/>
+	{% endfor %}
+{% endblock %}
+
+{% block recentvisits %}
+{% for recent_user in recent_list %}
+	<li> <a href="/bookface/visituser?username={{recent_user.username}}">{{recent_user.first_name}} {{recent_user.last_name}}</a>
+{% endfor %}
+{% endblock %}
